@@ -1,0 +1,32 @@
+{
+  "name": "@github-x/core-ui",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Modern React & Material-UI component system and dashboard toolkit",
+  "author": "kabiru-js <iamkabyrshuaib@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint src --ext .ts,.tsx",
+    "test": "jest --passWithNoTests"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.4",
+    "@mui/icons-material": "^5.15.14",
+    "@mui/material": "^5.15.14",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.2.67",
+    "@types/react-dom": "^18.2.22",
+    "@typescript-eslint/eslint-plugin": "^7.3.1",
+    "@typescript-eslint/parser": "^7.3.1",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.2",
+    "vite": "^5.1.6"
+  }
+}
