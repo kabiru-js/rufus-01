@@ -14,7 +14,15 @@ export const AppShell: React.FC<AppShellProps> = ({ children, mode = 'light' }) 
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', bgcolor: 'background.default' }}>
-        <Container maxWidth="xl" sx={{ py: 3, flexGrow: 1 }}>
+        <Container
+          maxWidth="xl"
+          sx={{
+            py: { xs: 2, sm: 3, md: 4 },
+            px: { xs: 2, sm: 3 },
+            flexGrow: 1,
+            transition: 'padding 0.2s ease-in-out',
+          }}
+        >
           {children}
         </Container>
       </Box>
