@@ -1,6 +1,5 @@
-import React, { createContext, useContext, useMemo, ReactNode } from 'react';
+import React, { createContext, useContext, useMemo, useState, useEffect, ReactNode } from 'react';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
-import { useLocalStorage } from '../hooks/useLocalStorage';
 import { getAppTheme } from '../theme';
 
 interface ThemeContextType {
@@ -12,13 +11,41 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const CustomThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [mode, setMode] = useLocalStorage<'light' | 'dark'>('app_theme_mode', 'light');
+  const [mode, setModeState] = useState<'light' | 'dark'>('light');
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem('app_theme_mode');
+      if (saved === 'dark' || saved === 'light') {
+        setModeState(saved);
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        setModeState('dark');
+      }
+    } catch {
+      // fallback
+    }
+    setIsMounted(true);
+  }, []);
+
+  const setMode = (newMode: 'light' | 'dark') => {
+    setModeState(newMode);
+    try {
+      window.localStorage.setItem('app_theme_mode', newMode);
+    } catch (e) {
+      console.warn('Unable to persist theme to localStorage', e);
+    }
+  };
 
   const toggleTheme = () => {
-    setMode((prev) => (prev === 'light' ? 'dark' : 'light'));
+    setMode(mode === 'light' ? 'dark' : 'light');
   };
 
   const theme = useMemo(() => getAppTheme(mode), [mode]);
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <ThemeContext.Provider value={{ mode, toggleTheme, setMode }}>
