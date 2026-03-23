@@ -26,13 +26,18 @@ export const Modal: React.FC<ModalProps> = ({
   actions,
   maxWidth = 'sm',
 }) => {
+  const titleId = title ? `dialog-title-${title.toLowerCase().replace(/\s+/g, '-')}` : undefined;
+
   return (
     <Dialog
       open={open}
       onClose={onClose}
       fullWidth
       maxWidth={maxWidth}
+      aria-labelledby={titleId}
+      aria-modal="true"
       PaperProps={{
+        elevation: 8,
         sx: {
           borderRadius: 3,
           p: 1,
@@ -40,9 +45,9 @@ export const Modal: React.FC<ModalProps> = ({
       }}
     >
       {title && (
-        <DialogTitle sx={{ m: 0, p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <DialogTitle id={titleId} sx={{ m: 0, p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography variant="h4">{title}</Typography>
-          <IconButton aria-label="close" onClick={onClose} size="small">
+          <IconButton aria-label="close modal" onClick={onClose} size="small">
             <CloseIcon fontSize="small" />
           </IconButton>
         </DialogTitle>
