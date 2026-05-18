@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -7,6 +7,7 @@ import {
   TableHead,
   TableRow,
   Paper,
+  TableSortLabel,
   TablePagination,
   TextField,
   Box,
@@ -19,6 +20,7 @@ export interface Column<T> {
   id: keyof T;
   label: string;
   minWidth?: number;
+  sortable?: boolean;
   render?: (value: any, row: T) => React.ReactNode;
 }
 
@@ -36,15 +38,39 @@ export function DataTable<T extends Record<string, any>>({
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [sortField, setSortField] = useState<keyof T | null>(null);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const debouncedSearch = useDebounce(search, 250);
 
+  useEffect(() => {
+    setPage(0);
+  }, [debouncedSearch]);
+
+  const handleSort = (field: keyof T) => {
+    const isAsc = sortField === field && sortDirection === 'asc';
+    setSortDirection(isAsc ? 'desc' : 'asc');
+    setSortField(field);
+  };
+
   const filteredRows = useMemo(() => {
-    if (!debouncedSearch) return rows;
-    const lower = debouncedSearch.toLowerCase();
-    return rows.filter((r) =>
-      Object.values(r).some((val) => String(val).toLowerCase().includes(lower))
-    );
-  }, [rows, debouncedSearch]);
+    let result = rows;
+    if (debouncedSearch) {
+      const lower = debouncedSearch.toLowerCase();
+      result = result.filter((r) =>
+        Object.values(r).some((val) => String(val).toLowerCase().includes(lower))
+      );
+    }
+    if (sortField) {
+      result = [...result].sort((a, b) => {
+        const valA = a[sortField];
+        const valB = b[sortField];
+        if (valA < valB) return sortDirection === 'asc' ? -1 : 1;
+        if (valA > valB) return sortDirection === 'asc' ? 1 : -1;
+        return 0;
+      });
+    }
+    return result;
+  }, [rows, debouncedSearch, sortField, sortDirection]);
 
   const pagedRows = useMemo(() => {
     return filteredRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
@@ -74,7 +100,17 @@ export function DataTable<T extends Record<string, any>>({
             <TableRow>
               {columns.map((col) => (
                 <TableCell key={String(col.id)} style={{ minWidth: col.minWidth }}>
-                  {col.label}
+                  {col.sortable ? (
+                    <TableSortLabel
+                      active={sortField === col.id}
+                      direction={sortField === col.id ? sortDirection : 'asc'}
+                      onClick={() => handleSort(col.id)}
+                    >
+                      {col.label}
+                    </TableSortLabel>
+                  ) : (
+                    col.label
+                  )}
                 </TableCell>
               ))}
             </TableRow>
