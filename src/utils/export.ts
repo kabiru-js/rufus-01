@@ -8,14 +8,16 @@ export function exportToCSV<T extends Record<string, any>>(
   const rows = data.map((row) =>
     headers
       .map((header) => {
-        const value = row[header];
-        const escaped = String(value ?? '').replace(/"/g, '""');
+        const val = row[header];
+        if (val === null || val === undefined) return '""';
+        const str = String(val);
+        const escaped = str.replace(/"/g, '""');
         return `"${escaped}"`;
       })
       .join(',')
   );
 
-  const csvContent = [headers.join(','), ...rows].join('\n');
+  const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\r\n');
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
 
