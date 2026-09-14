@@ -19,21 +19,21 @@ export const brandPalette = {
     contrastText: '#ffffff',
   },
   success: {
-    main: '#10b981',
+    main: '#059669', // improved contrast ratio WCAG AA
     light: '#34d399',
-    dark: '#059669',
+    dark: '#047857',
     contrastText: '#ffffff',
   },
   warning: {
-    main: '#f59e0b',
+    main: '#d97706',
     light: '#fbbf24',
-    dark: '#d97706',
-    contrastText: '#111827',
+    dark: '#b45309',
+    contrastText: '#ffffff',
   },
   error: {
-    main: '#ef4444',
+    main: '#dc2626',
     light: '#f87171',
-    dark: '#b91c1c',
+    dark: '#991b1b',
     contrastText: '#ffffff',
   },
   grey: {
