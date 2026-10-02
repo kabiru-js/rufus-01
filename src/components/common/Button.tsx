@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Button as MuiButton, ButtonProps as MuiButtonProps, CircularProgress } from '@mui/material';
 
 export interface ButtonProps extends Omit<MuiButtonProps, 'variant'> {
@@ -6,7 +6,7 @@ export interface ButtonProps extends Omit<MuiButtonProps, 'variant'> {
   loading?: boolean;
 }
 
-export const Button: React.FC<ButtonProps> = ({
+export const Button: React.FC<ButtonProps> = memo(({
   children,
   variant = 'contained',
   loading = false,
@@ -40,4 +40,6 @@ export const Button: React.FC<ButtonProps> = ({
       {children}
     </MuiButton>
   );
-};
+});
+
+Button.displayName = 'Button';
