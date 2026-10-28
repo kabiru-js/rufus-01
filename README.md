@@ -1,18 +1,36 @@
 # GitHub-X Core UI
 
-A modern React component ecosystem and enterprise dashboard system built with TypeScript and Material-UI (MUI v5).
+A production-ready React component ecosystem and enterprise dashboard toolkit built with TypeScript and Material-UI (MUI v5).
 
-## Overview
-This toolkit provides reusable components, customizable theme tokens, and dashboard widgets following strict clean code principles and WCAG accessibility standards.
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-## Project Structure
-```text
-src/
-├── components/     # UI components (common, layout, dashboard, data, forms)
-├── contexts/       # Application React context providers
-├── hooks/          # Custom utility React hooks
-├── mocks/          # Simulated datasets and service mocks
-├── theme/          # Design tokens, palette, and typography configurations
-├── types/          # Shared TypeScript type definitions
-└── utils/          # Pure helper and formatting functions
+## Key Highlights
+- **Design Tokens & Theme**: Dark/light mode theme provider with customizable palette overrides.
+- **Enterprise Controls**: Polymorphic `Button`, `Card`, `Modal`, `Badge`, and `DataTable`.
+- **Dashboard Modules**: `StatCard`, `MetricChart`, `ActivityFeed`, and responsive `OverviewGrid`.
+- **Form Suite**: `FormField`, `FileUpload` with drag-and-drop, and validator utilities.
+- **Productivity Hooks**: `useLocalStorage`, `useDebounce`, `useClipboard`, `useClickAway`, `useKeyNavigation`.
+
+## Quickstart
+
+```tsx
+import React from 'react';
+import { CustomThemeProvider, AppShell, OverviewGrid, DataTable } from '@github-x/core-ui';
+
+export function App() {
+  return (
+    <CustomThemeProvider>
+      <AppShell>
+        <OverviewGrid />
+      </AppShell>
+    </CustomThemeProvider>
+  );
+}
 ```
+
+## Contributing
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Run dev server: `npm run dev`
